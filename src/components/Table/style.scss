@@ -1,0 +1,101 @@
+@import "../../assets/styles/global";
+
+.tableContainer {
+  // width: 800px
+  max-height: 50vh;
+  max-width: 90%;
+  min-width: 500px;
+  border-radius: 8px;
+  margin: 30px auto;
+  overflow: auto;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+  }
+  th,
+  td {
+    padding: 10px;
+    text-align: right;
+    border-bottom: 1px solid #ccc;
+    white-space: pre;
+  }
+  thead {
+    background-color: #1d1e21;
+    color: #fff;
+    border: 2px solid rgba($primary, 0.5);
+    border-top-right-radius: 8px !important;
+    border-top-left-radius: 8px !important;
+  }
+  tr:nth-child(even) {
+    background-color: rgba(#1d1e21, $alpha: 0.5);
+  }
+
+  th {
+    // width: 100%;
+    text-align: right;
+    font-size: 13px;
+  }
+
+  .statusContainer {
+    background-color: $white;
+    border-radius: 8px;
+    padding: 2px 4px;
+    text-align: center;
+    width: 80px;
+  }
+  .in {
+    color: #0764e6;
+  }
+  .out {
+    color: #aa0000;
+  }
+
+
+  .actionsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    svg {
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    a {
+      width: fit-content;
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+      border: none;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+button {
+  margin-top: 30px;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  background-color: $primary;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  direction: rtl;
+  font-size: 12px;
+  width: 200px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($primary, 10%);
+  }
+}

@@ -1,0 +1,31 @@
+@import "../../assets/styles/global";
+
+.homeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  a {
+    margin-top: 20px;
+    text-align: center;
+    vertical-align: middle;
+    width: 400px;
+    padding: 10px 0;
+    background: #646464;
+    border-radius: 10px;
+    border: none;
+    color: $primary;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+      background: rgba($primary, $alpha: 0.5);
+    }
+    &:last-of-type {
+      color: red;
+      &:hover {
+        background: rgba($red, $alpha: 0.5);
+      }
+    }
+  }
+}

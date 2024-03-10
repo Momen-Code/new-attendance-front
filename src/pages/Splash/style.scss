@@ -1,0 +1,45 @@
+@import "../../assets/styles/global";
+
+.splashContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+
+  .splashTitle {
+    background: linear-gradient(
+      118deg,
+      #38b82c -40.67%,
+      #2f9e33 41.48%,
+      #fff 83.59%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    font-size: 70px;
+    line-height: 130px;
+    font-family: "Cairo";
+    font-weight: 700;
+  }
+  .container {
+    text-align: center;
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .splashLogo {
+    width: 650px;
+    height: 500px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .splashText {
+    font-size: 20px;
+    font-weight: 600;
+    color: $primary;
+  }
+}

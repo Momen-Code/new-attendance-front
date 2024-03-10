@@ -1,0 +1,33 @@
+@import "../../assets/styles/global";
+
+.inOutContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  a {
+    margin-top: 20px;
+    text-align: center;
+    vertical-align: middle;
+    width: 400px;
+    padding: 10px 0;
+    background: #646464;
+    border-radius: 10px;
+    border: none;
+    color: $primary;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+      background: rgba($primary, $alpha: 0.5);
+    }
+    &:last-of-type {
+      color: red;
+      &:hover {
+        background: rgba($red, $alpha: 0.5);
+      }
+    }
+  }
+}

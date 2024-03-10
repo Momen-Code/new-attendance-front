@@ -1,0 +1,55 @@
+@import "../../assets/styles/global";
+
+.registerContainer {
+  align-self: center;
+  text-align: center;
+  .container {
+    min-height: 200px;
+    height: fit-content;
+    background-color: $white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: flex-start;
+    box-shadow: 0px 2px 6px rgba($primary, $alpha: 0.5);
+    border-radius: 8px;
+    align-items: flex-start;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      input {
+        width: 400px;
+        outline: none;
+        border: none;
+        box-shadow: 0px 2px 6px rgba($primary, $alpha: 0.5);
+        padding: 3px 20px;
+        border-radius: 8px;
+        text-align: right;
+      }
+    }
+  }
+  button {
+    margin: 20px 0;
+    text-align: center;
+    padding: 3px 5px;
+    background: #646464;
+    border: none;
+    color: $primary;
+    font-size: 12px;
+    font-weight: 500;
+    vertical-align: middle;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 60px;
+    transition: 0.3s;
+    &:hover {
+      background: rgba($primary, $alpha: 0.5);
+    }
+
+    svg {
+      width: 50px;
+      height: 30px;
+      vertical-align: middle;
+    }
+  }
+}

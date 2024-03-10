@@ -1,0 +1,120 @@
+@import "../../assets/styles/global";
+
+.barcodeContainer {
+  align-self: center;
+  text-align: center;
+  .container {
+    min-height: 200px;
+    height: fit-content;
+    background-color: $white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: flex-start;
+    box-shadow: 0px 2px 6px rgba($primary, $alpha: 0.5);
+    border-radius: 8px;
+    align-items: flex-start;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      input {
+        width: 400px;
+        outline: none;
+        border: none;
+        box-shadow: 0px 2px 6px rgba($primary, $alpha: 0.5);
+        padding: 3px 20px;
+        border-radius: 8px;
+        text-align: right;
+      }
+    }
+  }
+  button {
+    margin: 20px 0;
+    text-align: center;
+    padding: 3px 5px;
+    background: #646464;
+    border: none;
+    color: $primary;
+    font-size: 12px;
+    font-weight: 500;
+    vertical-align: middle;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 60px;
+    transition: 0.3s;
+    &:hover {
+      background: rgba($primary, $alpha: 0.5);
+    }
+
+    svg {
+      width: 50px;
+      height: 30px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.resultsContainer {
+  align-self: center;
+  text-align: right;
+  h3 {
+    text-align: center;
+    color: $white;
+    font-size: 21px;
+  }
+  .container {
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 8px;
+    color: #646464;
+    .dataC {
+      label {
+        color: $black;
+        font-weight: 500;
+      }
+    }
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      input {
+        width: 300px;
+        outline: none;
+        border: none;
+        box-shadow: 0px 2px 6px rgba($primary, $alpha: 0.5);
+        padding: 3px 5px;
+        border-radius: 8px;
+      }
+    }
+  }
+  .btnContainer {
+    display: flex;
+    justify-content: space-around;
+    button {
+      margin-top: 20px;
+      text-align: center;
+      vertical-align: middle;
+      padding: 10px 20px;
+      background: #646464;
+      border-radius: 10px;
+      border: none;
+      color: $primary;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100px;
+      &:hover {
+        background: rgba($primary, $alpha: 0.5);
+      }
+      &:last-of-type {
+        color: red;
+        &:hover {
+          background: rgba($red, $alpha: 0.5);
+        }
+      }
+    }
+  }
+}

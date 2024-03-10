@@ -1,0 +1,12 @@
+export { default as Actions } from "./Actions";
+export { default as Barcode } from "./Barcode";
+export { default as Camera } from "./Camera";
+export { default as Dashboard } from "./Dashboard";
+export { default as Edit } from "./Edit";
+export { default as Home } from "./Home";
+export { default as InOut } from "./InOut";
+export { default as Login } from "./Login";
+export { default as Register } from "./Register";
+export { default as Splash } from "./Splash";
+export { default as TypeAction } from "./TypeAction";
+export { default as Users } from "./Users";
