@@ -19,7 +19,7 @@ const DeleteUser = ({ visible, setVisible, id, type }) => {
                 try {
                   setIsLoading(true);
                   let results = await axios.delete(
-                    `http://localhost:5000/${type}s/delete/${id}`,
+                    `http://localhost:5000/dashboard/${type}/${id}`,
                     {
                       headers: {
                         Authorization: `Bearer ${localStorage.getItem(
@@ -29,7 +29,7 @@ const DeleteUser = ({ visible, setVisible, id, type }) => {
                     }
                   );
 
-                  if (results.data.message) {
+                  if (results.data.success) {
                     setVisible(false);
                     createNotification(results.data.message, "success");
                     return true;

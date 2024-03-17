@@ -12,7 +12,7 @@ const TypeAction = () => {
     <Layout>
       <div className="typeActionContainer">
         <h3>
-          {type === "soldier" ? (
+          {type === "soldiers" ? (
             <>
               قوة اساسية
               <Link to={`/${type}/registration`}>اضافة</Link>

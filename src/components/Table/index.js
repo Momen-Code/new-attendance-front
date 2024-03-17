@@ -80,12 +80,14 @@ const Table = ({
           </div>
         )}
       </div>
-      <ExportToExcelButton
-        data={data?.pages[0]}
-        filename={path === "/" ? "تمام الحضور والانصراف" : "البيانات"}
-        type={type}
-        isAttendance={isAttendance}
-      />
+      {isAttendance && (
+        <ExportToExcelButton
+          data={data?.pages[0]}
+          filename={path === "/" ? "تمام الحضور والانصراف" : "البيانات"}
+          type={type}
+          isAttendance={isAttendance}
+        />
+      )}
     </>
   );
 };

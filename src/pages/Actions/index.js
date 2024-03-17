@@ -13,7 +13,7 @@ const Actions = () => {
       <div className="actionsContainer">
         <h3>{type === "in" ? "تسجيل دخول" : "تسجيل خروج"}</h3>
         <Link to={`/${type}/type-action/newComers`}>مستجدين</Link>
-        <Link to={`/${type}/type-action/soldier`}>قوة اساسية</Link>
+        <Link to={`/${type}/type-action/soldiers`}>قوة اساسية</Link>
         <Link to={`/${type}/type-action/officers`}>ضباط / صف ضباط</Link>
       </div>
     </Layout>

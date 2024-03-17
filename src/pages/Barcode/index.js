@@ -31,15 +31,24 @@ const Barcode = () => {
         createNotification(validationMessage, "warning");
         return;
       }
+      let res;
+      if (type !== "officers") {
+        res = await axios.get(
+          `http://localhost:5000/web/${type}/${formData.military_number}`,
+          {
+            params: formData,
+          }
+        );
+      } else {
+        res = await axios.get(
+          `http://localhost:5000/web/${type}/${formData.name}`,
+          {
+            params: formData,
+          }
+        );
+      }
 
-      const res = await axios.get(
-        `http://localhost:5000/web/${type}/${formData.military_number}`,
-        {
-          params: formData,
-        }
-      );
-
-      if (res.data.success) {
+      if (res.data.success && res.data.data) {
         setResult(res.data.data);
         createNotification("تم العثور على البيانات بنجاح", "success");
         setViewResult(true);
@@ -56,7 +65,7 @@ const Barcode = () => {
   };
 
   const validateFormData = (type, formData) => {
-    if (type === "soldier") return validateSoldierFormData(formData);
+    if (type === "soldiers") return validateSoldierFormData(formData);
     if (type === "newComers") return validateNewComersFormData(formData);
     if (type === "officers") return validateOfficersFormData(formData);
   };
@@ -135,7 +144,7 @@ const Barcode = () => {
                   }
                   const res = await axios.post(
                     `http://localhost:5000/web/attendance`,
-                    { user: result._id, status: status }
+                    { user: result._id, status: status, type }
                   );
 
                   if (res.data.success) {
@@ -166,7 +175,7 @@ export default Barcode;
 // Helper functions
 
 const getInitialFormData = (type) => {
-  return type === "soldier"
+  return type === "soldiers"
     ? { military_number: undefined }
     : type === "newComers"
     ? { military_number: undefined }
@@ -176,7 +185,7 @@ const getInitialFormData = (type) => {
 };
 
 const getTypeLabel = (type) => {
-  return type === "soldier"
+  return type === "soldiers"
     ? "قوة اساسية"
     : type === "newComers"
     ? "مستجدين"
@@ -194,7 +203,7 @@ const renderInputFields = (
 
   if (type !== "officers") {
     fields.push(
-      <div key="soldier-field">
+      <div key="soldiers-field">
         <input
           type="number"
           placeholder="الرقم العسكري..."

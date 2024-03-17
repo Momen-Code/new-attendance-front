@@ -16,23 +16,22 @@ const Edit = () => {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const result = await axios(`http://localhost:5000/${type}s/search`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        params: {
-          id: id,
-        },
-      });
-      if (result.data.data.length === 1) {
-        console.log("result: ", result);
-
+      const result = await axios.get(
+        `http://localhost:5000/dashboard/${type}/${id}`,
+        {
+          params: formData,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      if (result.data.success) {
         if (type !== "newComers") {
-          const { military_number, name, rank } = result.data.data[0];
+          const { military_number, name, rank } = result.data.data;
           setFormData({ military_number, name, rank });
         } else if (type === "newComers") {
-          const { military_number, name, rank, detachment } =
-            result.data.data[0];
+          const { military_number, name, rank, detachment } = result.data.data;
+          console.log(military_number);
           setFormData({ military_number, name, rank, detachment });
         }
         createNotification("تم جلب البيانات بنجاح", "success");
@@ -40,7 +39,6 @@ const Edit = () => {
         createNotification("لا يوجد بيانات", "warning");
       }
     } catch (error) {
-      console.error("Error:", error);
       createNotification(error, "error");
     } finally {
       setIsLoading(false);
@@ -63,8 +61,8 @@ const Edit = () => {
         createNotification(validationMessage, "warning");
         return;
       }
-      const res = await axios.put(
-        `http://localhost:5000/${type}s/update/${id}`,
+      const res = await axios.patch(
+        `http://localhost:5000/dashboard/${type}/${id}`,
         formData,
         {
           headers: {
@@ -72,7 +70,7 @@ const Edit = () => {
           },
         }
       );
-      if (res.data.message) {
+      if (res.data.success) {
         createNotification("تمت التعديل بنجاح", "success");
         handleReset();
         window.location.pathname = "/";
@@ -81,7 +79,6 @@ const Edit = () => {
         handleReset();
       }
     } catch (error) {
-      console.error("Error:", error);
       createNotification("حدث خطأ أثناء اضافة البيانات", "error");
       handleReset();
     } finally {
@@ -94,7 +91,7 @@ const Edit = () => {
   };
 
   const validateData = (type, formData) => {
-    if (type === "soldier") return validateSoldierData(formData);
+    if (type === "soldiers") return validateSoldierData(formData);
     if (type === "officers") return validateOfficersData(formData);
     if (type === "newComers") return validateNewComersData(formData);
   };
@@ -164,7 +161,7 @@ const Edit = () => {
 export default Edit;
 
 const getTypeLabel = (type) => {
-  return type === "soldier"
+  return type === "soldiers"
     ? "قوة اساسية"
     : type === "newComers"
     ? "مستجدين"
@@ -181,7 +178,7 @@ const renderInputFields = (type, formData, handleInputChange) => {
 
   if (type !== "newComers") {
     fields.push(
-      <div key="soldier-field">
+      <div key="soldiers-field">
         <input
           type="number"
           placeholder="الرقم العسكري..."
@@ -204,10 +201,10 @@ const renderInputFields = (type, formData, handleInputChange) => {
     );
   } else {
     fields.push(
-      <div key="soldier-field">
+      <div key="soldiers-field">
         <input
           type="number"
-          placeholder="الرقم العسكري..."
+          placeholder="الرقم العسكري"
           value={formData.military_number}
           onChange={(e) => handleInputChange("military_number", e.target.value)}
         />

@@ -50,7 +50,7 @@ const Register = () => {
   };
 
   const validateFormData = (type, formData) => {
-    if (type === "soldier") return validateSoldierFormData(formData);
+    if (type === "soldiers") return validateSoldierFormData(formData);
     if (type === "newComers") return validateNewComersFormData(formData);
     if (type === "officers") return validateOfficersFormData(formData);
   };
@@ -119,7 +119,7 @@ const Register = () => {
 export default Register;
 
 const getTypeLabel = (type) => {
-  return type === "soldier"
+  return type === "soldiers"
     ? "قوة اساسية"
     : type === "newComers"
     ? "مستجدين"
@@ -137,7 +137,7 @@ const renderInputFields = (type, formData, handleInputChange) => {
 
   if (type !== "newComers") {
     fields.push(
-      <div key="soldier-field">
+      <div key="soldiers-field">
         <input
           type="number"
           placeholder="الرقم العسكري..."

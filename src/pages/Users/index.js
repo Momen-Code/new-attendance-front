@@ -13,11 +13,9 @@ const Users = () => {
     "http://localhost:5000/dashboard/newComers"
   );
   const [filters, setFilters] = useState({
-    rank: "",
     name: "",
     military_number: "",
-    national_number: "",
-    last_update_date: "",
+    detachment: "",
     status: "",
   });
   const [index, setIndex] = useState(1);
@@ -36,6 +34,10 @@ const Users = () => {
       },
       { title: "الرتبة/الدرجة", selector: (row) => row.rank ?? "ـــ" },
       {
+        title: "الحالة",
+        selector: (row) => (row.status === "out" ? "خارج" : "داخل"),
+      },
+      {
         title: "",
         selector: (row) => (
           <div className="actionsContainer">
@@ -46,7 +48,7 @@ const Users = () => {
                   : index === 2
                   ? "soldiers"
                   : "officers"
-              }/edit/${row.id}`}
+              }/edit/${row.military_number}`}
               style={{ cursor: "pointer", textDecoration: "none" }}
             >
               <MdEdit size={20} fill="blue" />
@@ -56,7 +58,7 @@ const Users = () => {
                 size={20}
                 fill="red"
                 onClick={() => {
-                  setUserId(row.id);
+                  setUserId(row._id);
                   setVisible(true);
                 }}
               />
@@ -75,6 +77,10 @@ const Users = () => {
       },
       { title: "الرتبة/الدرجة", selector: (row) => row.rank ?? "ـــ" },
       {
+        title: "الحالة",
+        selector: (row) => (row.status === "out" ? "خارج" : "داخل"),
+      },
+      {
         title: "",
         selector: (row) => (
           <div className="actionsContainer">
@@ -85,7 +91,7 @@ const Users = () => {
                   : index === 2
                   ? "soldiers"
                   : "officers"
-              }/edit/${row.id}`}
+              }/edit/${row.military_number}`}
               style={{ cursor: "pointer", textDecoration: "none" }}
             >
               <MdEdit size={20} fill="blue" />
@@ -95,7 +101,7 @@ const Users = () => {
                 size={20}
                 fill="red"
                 onClick={() => {
-                  setUserId(row.id);
+                  setUserId(row._id);
                   setVisible(true);
                 }}
               />
@@ -129,7 +135,7 @@ const Users = () => {
                   : index === 2
                   ? "soldiers"
                   : "officers"
-              }/edit/${row.id}`}
+              }/edit/${row.military_number}`}
               style={{ cursor: "pointer", textDecoration: "none" }}
             >
               <MdEdit size={20} fill="blue" />
@@ -139,7 +145,7 @@ const Users = () => {
                 size={20}
                 fill="red"
                 onClick={() => {
-                  setUserId(row.id);
+                  setUserId(row._id);
                   setVisible(true);
                 }}
               />
@@ -186,6 +192,39 @@ const Users = () => {
                 }
               />
             </div>
+            {index === 1 && (
+              <div>
+                <label>الكتيبة</label>
+                <br />
+                <input
+                  type="text"
+                  value={filters.detachment}
+                  onChange={(e) =>
+                    setFilters({ ...filters, detachment: e.target.value })
+                  }
+                />
+              </div>
+            )}
+            <div>
+              <label>الحالة</label>
+              <br />
+              <div className="selectContainer">
+                <select
+                  id="selectBox6"
+                  value={filters.status}
+                  onChange={(e) =>
+                    setFilters({ ...filters, status: e.target.value })
+                  }
+                >
+                  <option value="" disabled selected>
+                    اختر الحالة
+                  </option>
+                  <option value="">الكل</option>
+                  <option value="out">خارج</option>
+                  <option value="in">داخل</option>
+                </select>
+              </div>
+            </div>
           </>
         </div>
         <div className="tabsContainer">
@@ -204,8 +243,8 @@ const Users = () => {
                   setEndPoint(
                     [
                       "http://localhost:5000/dashboard/newComers",
-                      "http://localhost:5000/soldiers/search",
-                      "http://localhost:5000/officers/search",
+                      "http://localhost:5000/dashboard/soldiers",
+                      "http://localhost:5000/dashboard/officers",
                     ][tabIndex]
                   );
                 }}
@@ -230,7 +269,7 @@ const Users = () => {
         setVisible={setVisible}
         visible={visible}
         id={userId}
-        type={index === 1 ? "newComers" : index === 2 ? "soldier" : "officers"}
+        type={index === 1 ? "newComers" : index === 2 ? "soldiers" : "officers"}
       />
     </Layout>
   );

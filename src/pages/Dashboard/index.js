@@ -1,10 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout, Table } from "../../components";
 import { formatDateToArabic } from "../../helpers";
 import { useAppContext } from "../../provider";
-
 //Styles
 import "./style.scss";
 
@@ -19,13 +18,13 @@ const Dashboard = () => {
     last_update_date: "",
     status: "",
   });
+  const [index, setIndex] = useState(1);
+  const [endpoint, setEndPoint] = useState(
+    "http://localhost:5000/dashboard/newComers/bulk"
+  );
 
   const columns = useMemo(() => {
-    const commonColumns = [
-      { title: "المسلسل", selector: (row, index) => `${index + 1}` },
-    ];
-
-    const newComersColumns = [
+    const columns = [
       { title: "المسلسل", selector: (row, index) => `${index + 1}` },
       { title: "الرتبة/الدرجة", selector: (row) => row.user.rank ?? "ـــ" },
       { title: "الاسم", selector: (row) => row.user.name ?? "ـــ" },
@@ -51,81 +50,41 @@ const Dashboard = () => {
       },
     ];
 
-    return newComersColumns;
+    return columns;
   }, []);
 
-  // const handleFileUpload = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const formData = new FormData();
-  //     formData.append("file", selectedFile);
-  //     let res;
-  //     if (index === 1) {
-  //       res = await axios.post(
-  //         `http://localhost:5000/soldiers/bulk-registration`,
-  //         formData,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-  //           },
-  //         }
-  //       );
-  //     } else if (index === 3) {
-  //       res = await axios.post(
-  //         `http://localhost:5000/vehicles/bulk-registration`,
-  //         formData,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-  //           },
-  //         }
-  //       );
-  //     }
+  const handleFileUpload = async () => {
+    try {
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      let res;
+      res = await axios.post(endpoint, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
 
-  //     if (res.data.message) {
-  //       createNotification("تم استيراد البيانات بنجاح", "success");
-  //       setSelectedFile(null);
-  //     } else {
-  //       createNotification("حدث خطأ اثناء استيراد البيانات", "error");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     createNotification(error, "error");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+      if (res.data.message) {
+        createNotification("تم استيراد البيانات بنجاح", "success");
+        setSelectedFile(null);
+      } else {
+        createNotification("حدث خطأ اثناء استيراد البيانات", "error");
+      }
+    } catch (error) {
+      console.log(error);
+      createNotification(error, "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Layout>
       <div className="dashboardContainer">
         <Link to="users">عرض البيانات</Link>
-
-        {/* <div className="headerStat">
-          <div>
-            <div>{formatDateToArabic(new Date().toLocaleDateString())}</div>
-            <div>
-              {statistics.total_in_camp}
-              <span>عدد الافراد</span>
-            </div>
-            <div>
-              {statistics.soldiers_in_camp} <span>موجود</span>
-            </div>
-          </div>
-          <div>
-            <div>
-              {statistics.vehicles_in_camp} <span>عدد المركبات</span>
-            </div>
-            <div>
-              {statistics.visitors_in_camp} <span>عدد الزائرين</span>
-            </div>
-            <div>
-              {statistics.solider_out_of_camp} <span>خروج</span>
-            </div>
-          </div>
-        </div> */}
       </div>
-      {/* <div className="filtersContainer">
+      <div className="filtersContainer">
         <div>
           <label>التاريخ</label>
           <br />
@@ -135,49 +94,29 @@ const Dashboard = () => {
             onChange={(e) => setFilters({ ...filters, date: e.target.value })}
           />
         </div>
-        {index === 3 ? (
-          <>
-            <div>
-              <label>رقم اللوحة</label>
-              <br />
-              <input
-                type="text"
-                value={filters.license_plate_number}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    license_plate_number: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </>
-        ) : (
-          <>
-            <div>
-              <label>الرقم العسكري</label>
-              <br />
-              <input
-                type="number"
-                value={filters.military_number}
-                onChange={(e) =>
-                  setFilters({ ...filters, military_number: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label>الاسم</label>
-              <br />
-              <input
-                type="text"
-                value={filters.name}
-                onChange={(e) =>
-                  setFilters({ ...filters, name: e.target.value })
-                }
-              />
-            </div>
-          </>
-        )}
+        <>
+          <div>
+            <label>الرقم العسكري</label>
+            <br />
+            <input
+              type="number"
+              value={filters.military_number}
+              onChange={(e) =>
+                setFilters({ ...filters, military_number: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label>الاسم</label>
+            <br />
+            <input
+              type="text"
+              value={filters.name}
+              onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+            />
+          </div>
+        </>
+
         <div>
           <label>الحالة</label>
           <br />
@@ -198,9 +137,9 @@ const Dashboard = () => {
             </select>
           </div>
         </div>
-      </div> */}
-      {/* <div className="tabsContainer">
-        {["الكل", "المستجدين", "القوة الاساسية", "ضباط / صف ضباط"].map(
+      </div>
+      <div className="tabsContainer">
+        {["المستجدين", "القوة الاساسية", "ضباط / صف ضباط"].map(
           (tab, tabIndex) => (
             <div
               key={tabIndex}
@@ -211,15 +150,12 @@ const Dashboard = () => {
                   rank: "",
                   name: "",
                   military_number: "",
-                  date: "",
-                  status: "",
                 });
                 setEndPoint(
                   [
-                    "http://localhost:5000/dashboard/attendance",
-                    "http://localhost:5000/dashboard/attendance",
-                    "http://localhost:5000/dashboard/attendance",
-                    "http://localhost:5000/dashboard/attendance",
+                    "http://localhost:5000/dashboard/newComers/bulk",
+                    "http://localhost:5000/dashboard/soldiers/bulk",
+                    "http://localhost:5000/dashboard/officers/bulk",
                   ][tabIndex]
                 );
               }}
@@ -228,8 +164,8 @@ const Dashboard = () => {
             </div>
           )
         )}
-      </div> */}
-      {/* <div className="importButton">
+      </div>
+      <div className="importButton">
         <label className="custom-file-input">
           <input
             type="file"
@@ -239,7 +175,7 @@ const Dashboard = () => {
           {selectedFile ? selectedFile.name : "استيراد ملف"}
         </label>
         {selectedFile && <button onClick={handleFileUpload}>استيراد</button>}
-      </div> */}
+      </div>
       <Table
         columns={columns}
         keyValue={"attendance"}
