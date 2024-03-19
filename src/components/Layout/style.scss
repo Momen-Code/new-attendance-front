@@ -68,14 +68,14 @@
       width: 50%;
       height: 100%;
       position: relative;
-      z-index: 111;
+      z-index: 1;
       .bgImage {
         position: absolute;
         right: 20%;
         bottom: 0px;
         top: 50px;
         opacity: 0.1;
-        z-index: -1;
+        z-index: -100;
         width: 650px;
         height: 500px;
         // img {

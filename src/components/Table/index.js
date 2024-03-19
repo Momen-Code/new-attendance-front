@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useInfiniteQuery } from "react-query";
 import { useAppContext } from "../../provider";
 import ExportToExcelButton from "../ExportToExcel";
+import InfinitScroll from "react-infinite-scroll-component";
 
 //Styles
 import "./style.scss";
@@ -19,25 +20,42 @@ const Table = ({
   path = "/",
 }) => {
   const { setIsLoading, isLoading } = useAppContext();
-  const { data, refetch } = useInfiniteQuery([keyValue, 1], async () => {
-    try {
-      setIsLoading(true);
-      const result = await axios.get(endPoint, {
-        params: {
-          ...filters,
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      setIsLoading(false);
-      console.log(result.data);
-      return result.data.data;
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
+  const [numberOfPages, setNumberOfPages] = useState(0);
+  const { data, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    [keyValue, 1],
+    async ({ pageParam = 0 }) => {
+      try {
+        setIsLoading(true);
+        const result = await axios.get(endPoint, {
+          params: {
+            ...filters,
+            skip: pageParam,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
+        setNumberOfPages(result.data.numberOfPages);
+        setIsLoading(false);
+        return result.data.data;
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    },
+    {
+      // keepPreviousData: true,
+      // enabled: true,
+      // getNextPageParam: (lastPage, pages) => {
+      //   console.log("sdsd", pages.length);
+      //   if (pages.length !== numberOfPages) {
+      //     console.log("entered");
+      //     return pages.length * 10;
+      //   }
+      // },
     }
-  });
+  );
+  // const finalData = data?.pages?.reduce((acc, curr) => [...acc, ...curr]);
 
   useEffect(() => {
     if (!data) {
@@ -52,6 +70,20 @@ const Table = ({
   return (
     <>
       <div className="tableContainer">
+        {/* <InfinitScroll
+          dataLength={numberOfPages * 10}
+          next={fetchNextPage}
+          scrollableTarget="table-container"
+          hasMore={hasNextPage}
+          // loader={<PropagateLoader size={16} color="#4397df" />}
+          endMessage={
+            finalData?.length != 0 ? (
+              <div className="loading-container">نهاية البيانات</div>
+            ) : (
+              <div className="loading-container">لا يوجد سجلات</div>
+            )
+          }
+        > */}
         <table>
           <thead>
             <tr>
@@ -74,11 +106,7 @@ const Table = ({
             )}
           </tbody>
         </table>
-        {(!data?.pages || data?.pages[0]?.length == 0) && (
-          <div style={{ textAlign: "center", margin: "4px 0px" }}>
-            لا توجد بيانات
-          </div>
-        )}
+        {/* </InfinitScroll> */}
       </div>
       {isAttendance && (
         <ExportToExcelButton

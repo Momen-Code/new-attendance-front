@@ -33,7 +33,8 @@ const Login = () => {
           </div>
         </div>
         <button
-          onClick={async () => {
+          onClick={async (e) => {
+            e.preventDefault();
             try {
               setIsLoading(true);
 
@@ -67,9 +68,11 @@ const Login = () => {
                   "خطأ في اسم المستخدم او كلمة المرور",
                   "error"
                 );
+                return;
               }
             } catch (error) {
               createNotification(error, "error");
+              return;
             } finally {
               setIsLoading(false);
             }
