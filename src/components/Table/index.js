@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useInfiniteQuery } from "react-query";
 import { useAppContext } from "../../provider";
 import ExportToExcelButton from "../ExportToExcel";
-import InfinitScroll from "react-infinite-scroll-component";
 
 //Styles
 import "./style.scss";
@@ -19,9 +18,9 @@ const Table = ({
   isAttendance,
   path = "/",
 }) => {
-  const { setIsLoading, isLoading } = useAppContext();
-  const [numberOfPages, setNumberOfPages] = useState(0);
-  const { data, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery(
+  const { setIsLoading } = useAppContext();
+  const [, setNumberOfPages] = useState(0);
+  const { data, refetch } = useInfiniteQuery(
     [keyValue, 1],
     async ({ pageParam = 0 }) => {
       try {
@@ -108,14 +107,13 @@ const Table = ({
         </table>
         {/* </InfinitScroll> */}
       </div>
-      {isAttendance && (
-        <ExportToExcelButton
-          data={data?.pages[0]}
-          filename={path === "/" ? "تمام الحضور والانصراف" : "البيانات"}
-          type={type}
-          isAttendance={isAttendance}
-        />
-      )}
+      <ExportToExcelButton
+        data={data?.pages[0]}
+        filename={path === "/" ? "تمام الحضور والانصراف" : "البيانات"}
+        type={type}
+        isUsers={!isAttendance}
+        userType={type}
+      />
     </>
   );
 };

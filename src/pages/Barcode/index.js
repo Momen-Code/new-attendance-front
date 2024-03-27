@@ -41,7 +41,9 @@ const Barcode = () => {
         );
       } else {
         res = await axios.get(
-          `http://localhost:5000/web/${type}/${formData.name}`,
+          `http://localhost:5000/web/${type}/${
+            formData.name ? formData.name : formData.military_number
+          }`,
           {
             params: formData,
           }
@@ -84,9 +86,10 @@ const Barcode = () => {
     return "";
   };
 
-  const validateOfficersFormData = ({ name }) => {
-    if (!name) {
-      return "برجاء كتابة الاسم!";
+  const validateOfficersFormData = ({ name, military_number }) => {
+    console.log(military_number);
+    if (!name && !military_number) {
+      return "برجاء كتابة الاسم او الرقم العسكري!";
     }
 
     return "";
@@ -181,6 +184,7 @@ const getInitialFormData = (type) => {
     ? { military_number: undefined }
     : {
         name: undefined,
+        military_number: undefined,
       };
 };
 
@@ -192,13 +196,7 @@ const getTypeLabel = (type) => {
     : "ضباط / صف ضباط";
 };
 
-const renderInputFields = (
-  type,
-  formData,
-  handleInputChange,
-  identifierType,
-  setIdentifierType
-) => {
+const renderInputFields = (type, formData, handleInputChange) => {
   const fields = [];
 
   if (type !== "officers") {
@@ -214,14 +212,24 @@ const renderInputFields = (
     );
   } else {
     fields.push(
-      <div>
-        <input
-          type="text"
-          placeholder="الاسم ..."
-          value={formData.name}
-          onChange={(e) => handleInputChange("name", e.target.value)}
-        />
-      </div>
+      <>
+        <div>
+          <input
+            type="text"
+            placeholder="الاسم ..."
+            value={formData.name}
+            onChange={(e) => handleInputChange("name", e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="الرقم العسكري..."
+            value={formData.military_number}
+            onChange={(e) =>
+              handleInputChange("military_number", e.target.value)
+            }
+          />
+        </div>
+      </>
     );
   }
   return fields;

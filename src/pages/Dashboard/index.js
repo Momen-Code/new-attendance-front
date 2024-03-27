@@ -138,7 +138,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      {/* <div className="tabsContainer">
+      <div className="tabsContainer">
         {["المستجدين", "القوة الاساسية", "ضباط / صف ضباط"].map(
           (tab, tabIndex) => (
             <div
@@ -164,8 +164,8 @@ const Dashboard = () => {
             </div>
           )
         )}
-      </div> */}
-      {/* <div className="importButton">
+      </div>
+      <div className="importButton">
         <label className="custom-file-input">
           <input
             type="file"
@@ -175,7 +175,7 @@ const Dashboard = () => {
           {selectedFile ? selectedFile.name : "استيراد ملف"}
         </label>
         {selectedFile && <button onClick={handleFileUpload}>استيراد</button>}
-      </div> */}
+      </div>
       <Table
         columns={columns}
         keyValue={"attendance"}

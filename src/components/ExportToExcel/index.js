@@ -2,28 +2,58 @@ import React from "react";
 import * as XLSX from "xlsx";
 import { formatDateToArabic } from "../../helpers";
 
-const ExportToExcelButton = ({ data, filename }) => {
-  let headerTranslations = {
-    rank: "الرتبة",
-    name: "الاسم",
-    military_number: "الرقم العسكري",
-    updatedAt: "تاريخ آخر تحديث",
-    status: "الحالة",
-  };
+const ExportToExcelButton = ({ data, filename, isUsers, userType }) => {
+  let headerTranslations;
+  if (isUsers && userType === "newComers") {
+    headerTranslations = {
+      rank: "الرتبة",
+      name: "الاسم",
+      military_number: "الرقم العسكري",
+      detachment: "الكتيبة",
+      updatedAt: "تاريخ آخر تحديث",
+      status: "الحالة",
+    };
+  } else {
+    headerTranslations = {
+      rank: "الرتبة",
+      name: "الاسم",
+      military_number: "الرقم العسكري",
+      updatedAt: "تاريخ آخر تحديث",
+      status: "الحالة",
+    };
+  }
 
   const exportToExcel = () => {
     const translatedData = data.map((item) => {
-      const columnOrder = [
-        "rank",
-        "name",
-        "military_number",
-        "updatedAt",
-        "status",
-      ];
+      let columnOrder;
+      if (isUsers && userType === "newComers") {
+        columnOrder = [
+          "rank",
+          "name",
+          "military_number",
+          "detachment",
+          "updatedAt",
+          "status",
+        ];
+      } else {
+        columnOrder = [
+          "rank",
+          "name",
+          "military_number",
+          "updatedAt",
+          "status",
+        ];
+      }
 
       const translatedItem = {};
       columnOrder.forEach((key) => {
-        if (key === "name" || key === "rank" || key === "military_number") {
+        if (
+          !isUsers &&
+          (key === "name" ||
+            key === "rank" ||
+            key === "military_number" ||
+            key === "detachment")
+        ) {
           translatedItem[headerTranslations[key]] = item.user[key];
           return;
         }
@@ -37,6 +67,8 @@ const ExportToExcelButton = ({ data, filename }) => {
             item[key]
           );
           return;
+        } else {
+          translatedItem[headerTranslations[key]] = item[key];
         }
       });
       return translatedItem;

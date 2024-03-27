@@ -1,12 +1,16 @@
+import axios from "axios";
 import React, { useMemo, useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DeleteUser, Layout, Table } from "../../components";
+import { useAppContext } from "../../provider";
 
 //styles
 import "./style.scss";
 
 const Users = () => {
+  const { type, status } = useParams();
+  const { createNotification, setIsLoading } = useAppContext();
   const [visible, setVisible] = useState(false);
   const [userId, setUserId] = useState(null);
   const [endpoint, setEndPoint] = useState(
@@ -63,6 +67,49 @@ const Users = () => {
                 }}
               />
             </div>
+            <span>
+              <button
+                className="actBtn"
+                type="button"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  setIsLoading(true);
+                  try {
+                    const res = await axios.patch(
+                      `http://localhost:5000/dashboard/soldiers/${row.military_number}`,
+                      {
+                        status: row.status === "in" ? "out" : "in",
+                      },
+                      {
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                          )}`,
+                        },
+                      }
+                    );
+                    if (res.data.success) {
+                      createNotification("تمت التعديل بنجاح", "success");
+                      setFilters({
+                        name: "",
+                        military_number: "",
+                        detachment: "",
+                        status: "",
+                      });
+                    } else {
+                      createNotification("لم يتم التعديل", "error");
+                    }
+                  } catch (error) {
+                    createNotification("حدث خطأ أثناء تعديل البيانات", "error");
+                    console.log(error);
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+              >
+                تغير الحالة
+              </button>
+            </span>
           </div>
         ),
       },
@@ -106,6 +153,49 @@ const Users = () => {
                 }}
               />
             </div>
+            <span>
+              <button
+                className="actBtn"
+                type="button"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  setIsLoading(true);
+                  try {
+                    const res = await axios.patch(
+                      `http://localhost:5000/dashboard/officers/${row.military_number}`,
+                      {
+                        status: row.status === "in" ? "out" : "in",
+                      },
+                      {
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                          )}`,
+                        },
+                      }
+                    );
+                    if (res.data.success) {
+                      createNotification("تمت التعديل بنجاح", "success");
+                      setFilters({
+                        name: "",
+                        military_number: "",
+                        detachment: "",
+                        status: "",
+                      });
+                    } else {
+                      createNotification("لم يتم التعديل", "error");
+                    }
+                  } catch (error) {
+                    createNotification("حدث خطأ أثناء تعديل البيانات", "error");
+                    console.log(error);
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+              >
+                تغير الحالة
+              </button>
+            </span>
           </div>
         ),
       },
@@ -149,7 +239,50 @@ const Users = () => {
                   setVisible(true);
                 }}
               />
-            </div>
+            </div>{" "}
+            <span>
+              <button
+                className="actBtn"
+                type="button"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  setIsLoading(true);
+                  try {
+                    const res = await axios.patch(
+                      `http://localhost:5000/dashboard/newComers/${row.military_number}`,
+                      {
+                        status: row.status === "in" ? "out" : "in",
+                      },
+                      {
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                          )}`,
+                        },
+                      }
+                    );
+                    if (res.data.success) {
+                      createNotification("تمت التعديل بنجاح", "success");
+                      setFilters({
+                        name: "",
+                        military_number: "",
+                        detachment: "",
+                        status: "",
+                      });
+                    } else {
+                      createNotification("لم يتم التعديل", "error");
+                    }
+                  } catch (error) {
+                    createNotification("حدث خطأ أثناء تعديل البيانات", "error");
+                    console.log(error);
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+              >
+                تغير الحالة
+              </button>
+            </span>
           </div>
         ),
       },
