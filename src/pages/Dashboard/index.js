@@ -194,31 +194,29 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="tabsContainer">
-        {["المستجدين", "القوة الاساسية", "ضباط / صف ضباط"].map(
-          (tab, tabIndex) => (
-            <div
-              key={tabIndex}
-              className={`tab ${index === tabIndex + 1 ? "active" : ""}`}
-              onClick={() => {
-                setIndex(tabIndex + 1);
-                setFilters({
-                  rank: "",
-                  name: "",
-                  military_number: "",
-                });
-                setEndPoint(
-                  [
-                    "http://localhost:5000/dashboard/newComers/bulk",
-                    "http://localhost:5000/dashboard/soldiers/bulk",
-                    "http://localhost:5000/dashboard/officers/bulk",
-                  ][tabIndex]
-                );
-              }}
-            >
-              {tab}
-            </div>
-          )
-        )}
+        {["المستجدين"].map((tab, tabIndex) => (
+          <div
+            key={tabIndex}
+            className={`tab ${index === tabIndex + 1 ? "active" : ""}`}
+            onClick={() => {
+              setIndex(tabIndex + 1);
+              setFilters({
+                rank: "",
+                name: "",
+                military_number: "",
+              });
+              setEndPoint(
+                [
+                  "http://localhost:5000/dashboard/newComers/bulk",
+                  "http://localhost:5000/dashboard/soldiers/bulk",
+                  "http://localhost:5000/dashboard/officers/bulk",
+                ][tabIndex]
+              );
+            }}
+          >
+            {tab}
+          </div>
+        ))}
       </div>
       <div className="importButton">
         <label className="custom-file-input">

@@ -1,5 +1,27 @@
 @import "../../assets/styles/global";
 
+.count{
+  text-align: center;
+  margin-inline: auto;
+  margin-block: 30px;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  background-color: $primary;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  direction: rtl;
+  font-size: 12px;
+  width: 200px;
+
+  &:hover {
+    background-color: darken($primary, 10%);
+  }
+}
 .tableContainer {
   // width: 800px
   max-height: 50vh;
@@ -8,28 +30,7 @@
   border-radius: 8px;
   margin: 30px auto;
   overflow: auto;
-  .count{
-    text-align: center;
-    margin-inline: auto;
-    margin-block: 30px;
-    text-decoration: none;
-    border: none;
-    outline: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-    background-color: $primary;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    direction: rtl;
-    font-size: 12px;
-    width: 200px;
-  
-    &:hover {
-      background-color: darken($primary, 10%);
-    }
-  }
+ 
   table {
     width: 100%;
     border-collapse: collapse;

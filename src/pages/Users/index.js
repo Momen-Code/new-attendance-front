@@ -21,7 +21,7 @@ const Users = () => {
     military_number: "",
     detachment: "",
     status: "",
-    arrive_on: null,
+    arrive_on: "",
   });
   const [index, setIndex] = useState(1);
 
@@ -217,7 +217,7 @@ const Users = () => {
       },
       {
         title: "موعد الرجوع",
-        selector: (row) => (row.arrive_on === 1 ? "الخميس" : "الجمعة"),
+        selector: (row) => (row.arrive_on === "1" ? "الخميس" : "الجمعة"),
       },
       {
         title: "",

@@ -23,8 +23,10 @@ const ExportToExcelButton = ({ data, filename, isUsers, userType }) => {
     };
   }
 
-  const exportToExcel = () => {
-    const translatedData = data.map((item) => {
+  const exportToExcel = async () => {
+    const [res] = await Promise.all([data()]);
+
+    const translatedData = res?.map((item) => {
       let columnOrder;
       if (isUsers && userType === "newComers") {
         columnOrder = [
