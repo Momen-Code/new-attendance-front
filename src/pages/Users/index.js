@@ -21,6 +21,7 @@ const Users = () => {
     military_number: "",
     detachment: "",
     status: "",
+    arrive_on: null,
   });
   const [index, setIndex] = useState(1);
 
@@ -215,6 +216,10 @@ const Users = () => {
         selector: (row) => (row.status === "out" ? "خارج" : "داخل"),
       },
       {
+        title: "موعد الرجوع",
+        selector: (row) => (row.arrive_on === 1 ? "الخميس" : "الجمعة"),
+      },
+      {
         title: "",
         selector: (row) => (
           <div className="actionsContainer">
@@ -358,34 +363,57 @@ const Users = () => {
                 </select>
               </div>
             </div>
+            {index === 1 && (
+              <div>
+                <label>موعد الرجوع</label>
+                <br />
+                <div className="selectContainer">
+                  <select
+                    id="selectBox88"
+                    value={filters.arrive_on}
+                    onChange={(e) =>
+                      setFilters({
+                        ...filters.arrive_on,
+                        arrive_on: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="" disabled selected>
+                      اختر الموعد
+                    </option>
+                    <option value="">الكل</option>
+                    <option value="1">الخميس</option>
+                    <option value="2">الجمعة</option>
+                  </select>
+                </div>
+              </div>
+            )}
           </>
         </div>
         <div className="tabsContainer">
-          {["المستجدين", "القوة الاساسية", "ضباط / صف ضباط"].map(
-            (tab, tabIndex) => (
-              <div
-                key={tabIndex}
-                className={`tab ${index === tabIndex + 1 ? "active" : ""}`}
-                onClick={() => {
-                  setIndex(tabIndex + 1);
-                  setFilters({
-                    rank: "",
-                    name: "",
-                    military_number: "",
-                  });
-                  setEndPoint(
-                    [
-                      "http://localhost:5000/dashboard/newComers",
-                      "http://localhost:5000/dashboard/soldiers",
-                      "http://localhost:5000/dashboard/officers",
-                    ][tabIndex]
-                  );
-                }}
-              >
-                {tab}
-              </div>
-            )
-          )}
+          {["المستجدين"].map((tab, tabIndex) => (
+            <div
+              key={tabIndex}
+              className={`tab ${index === tabIndex + 1 ? "active" : ""}`}
+              onClick={() => {
+                setIndex(tabIndex + 1);
+                setFilters({
+                  rank: "",
+                  name: "",
+                  military_number: "",
+                });
+                setEndPoint(
+                  [
+                    "http://localhost:5000/dashboard/newComers",
+                    "http://localhost:5000/dashboard/soldiers",
+                    "http://localhost:5000/dashboard/officers",
+                  ][tabIndex]
+                );
+              }}
+            >
+              {tab}
+            </div>
+          ))}
         </div>
       </div>
       <Table

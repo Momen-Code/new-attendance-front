@@ -18,9 +18,9 @@ const Table = ({
   isAttendance,
   path = "/",
 }) => {
-  const { setIsLoading } = useAppContext();
-  const [, setNumberOfPages] = useState(0);
-  const { data, refetch } = useInfiniteQuery(
+  const { setIsLoading, isLoading } = useAppContext();
+  const [numberOfRecords, setNumberOfRecords] = useState(0);
+  const { data, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery(
     [keyValue, 1],
     async ({ pageParam = 0 }) => {
       try {
@@ -34,7 +34,9 @@ const Table = ({
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         });
-        setNumberOfPages(result.data.numberOfPages);
+
+        console.log(result.data.numberOfRecords);
+        setNumberOfRecords(result.data.numberOfRecords);
         setIsLoading(false);
         return result.data.data;
       } catch (error) {
@@ -83,6 +85,7 @@ const Table = ({
             )
           }
         > */}
+        {!isAttendance && <div className="count">العدد:{numberOfRecords}</div>}
         <table>
           <thead>
             <tr>
