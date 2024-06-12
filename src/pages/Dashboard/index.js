@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout, Table } from "../../components";
 import { formatDateToArabic } from "../../helpers";
@@ -10,6 +10,11 @@ import "./style.scss";
 const Dashboard = () => {
   const { setIsLoading, createNotification } = useAppContext();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [statistics, setStatistics] = useState({
+    date: null,
+    total_newComers_in_camp: 0,
+    total_newComers_out_camp: 0,
+  });
   const [filters, setFilters] = useState({
     rank: "",
     name: "",
@@ -17,6 +22,7 @@ const Dashboard = () => {
     national_number: "",
     last_update_date: "",
     status: "",
+    date: new Date().toISOString(),
   });
   const [index, setIndex] = useState(1);
   const [endpoint, setEndPoint] = useState(
@@ -53,6 +59,41 @@ const Dashboard = () => {
     return columns;
   }, []);
 
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      const result = await axios.get(
+        `http://localhost:5000/dashboard/newComers/statistics`,
+        {
+          params: filters,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      if (result.data.success) {
+        const { date, total_newComers_in_camp, total_newComers_out_camp } =
+          result.data.data;
+        setStatistics({
+          date,
+          total_newComers_in_camp,
+          total_newComers_out_camp,
+        });
+        createNotification("تم جلب البيانات بنجاح", "success");
+      } else {
+        createNotification("لا يوجد بيانات", "warning");
+      }
+    } catch (error) {
+      createNotification(error, "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [filters]);
+
   const handleFileUpload = async () => {
     try {
       setIsLoading(true);
@@ -82,7 +123,21 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="dashboardContainer">
-        <Link to="users">عرض البيانات</Link>
+        <div className="headerStat">
+          <div>
+            <div>{formatDateToArabic(new Date(statistics.date))}</div>
+            {/* <div>{statistics.date}</div> */}
+            <div>
+              {statistics.total_newComers_in_camp}
+              <span>عدد المستجدين داخل المركز</span>
+            </div>
+            <div>
+              {statistics.total_newComers_out_camp}
+              <span>عدد المستجدين خارج المركز</span>
+            </div>
+          </div>
+          <Link to="users">عرض البيانات</Link>
+        </div>
       </div>
       <div className="filtersContainer">
         <div>
@@ -139,31 +194,29 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="tabsContainer">
-        {["المستجدين", "القوة الاساسية", "ضباط / صف ضباط"].map(
-          (tab, tabIndex) => (
-            <div
-              key={tabIndex}
-              className={`tab ${index === tabIndex + 1 ? "active" : ""}`}
-              onClick={() => {
-                setIndex(tabIndex + 1);
-                setFilters({
-                  rank: "",
-                  name: "",
-                  military_number: "",
-                });
-                setEndPoint(
-                  [
-                    "http://localhost:5000/dashboard/newComers/bulk",
-                    "http://localhost:5000/dashboard/soldiers/bulk",
-                    "http://localhost:5000/dashboard/officers/bulk",
-                  ][tabIndex]
-                );
-              }}
-            >
-              {tab}
-            </div>
-          )
-        )}
+        {["المستجدين"].map((tab, tabIndex) => (
+          <div
+            key={tabIndex}
+            className={`tab ${index === tabIndex + 1 ? "active" : ""}`}
+            onClick={() => {
+              setIndex(tabIndex + 1);
+              setFilters({
+                rank: "",
+                name: "",
+                military_number: "",
+              });
+              setEndPoint(
+                [
+                  "http://localhost:5000/dashboard/newComers/bulk",
+                  "http://localhost:5000/dashboard/soldiers/bulk",
+                  "http://localhost:5000/dashboard/officers/bulk",
+                ][tabIndex]
+              );
+            }}
+          >
+            {tab}
+          </div>
+        ))}
       </div>
       <div className="importButton">
         <label className="custom-file-input">
